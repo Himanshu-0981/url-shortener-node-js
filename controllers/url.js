@@ -19,8 +19,14 @@ const handleSaveURL = async (req, res) => {
   const uuid = uid.rnd();
 
   try {
-    await URL.create({ shortURL: uuid, redirectedURL: body.url });
-    res.json({ shortId: uuid });
+    await URL.create({
+      shortURL: uuid,
+      redirectedURL: body.url,
+      visitedHistory: [],
+    });
+    return res.render("home", {
+      shortId: uuid,
+    });
   } catch (err) {
     res.json({ error: err });
   }

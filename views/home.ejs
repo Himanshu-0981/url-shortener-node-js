@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HomePage</title>
+  </head>
+  <style>
+    * {
+      font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+
+    table {
+      width: 100vw;
+    }
+  </style>
+  <body>
+    <h1>URL Shortener</h1>
+
+    <form method="POST" action="/url">
+      <label>Enter your URL</label>
+      <input type="text" placeholder="https://example.com" name="url" />
+      <button type="submit">Generate URL</button>
+    </form>
+    <!-- when any data came from backend it stores in LOCALS -->
+    <% if (locals.shortId) { %>
+    <p>
+      Short URL generated :
+      <a href="http://localhost:8080/<%= shortId %>"
+        >http://localhost:8080/<%= shortId %></a
+      >
+    </p>
+    <% } %>
+    <div>
+      <% if (locals.urls ) { %>
+      <table border="1">
+        <thead>
+          <tr>
+            <th>S.No</th>
+            <th>Short ID</th>
+            <th>Redirected</th>
+            <th>Current clicks</th>
+          </tr>
+        </thead>
+        <% urls.forEach((url,index) => { %>
+
+        <tbody>
+          <tr>
+            <td><%= index+1 %></td>
+            <td>http://localhost:8080/<%= url.shortURL %></td>
+            <td><%= url.redirectedURL %></td>
+            <td><%= url.visitedHistory.length %></td>
+          </tr>
+        </tbody>
+        <% }) %>
+      </table>
+      <% } %>
+    </div>
+  </body>
+</html>

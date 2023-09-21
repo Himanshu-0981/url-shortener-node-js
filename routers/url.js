@@ -8,7 +8,7 @@ const {
 
 const router = express.Router();
 
-router.route("/").get(handleGetAllURL);
+router.route("/allurl").get(handleGetAllURL);
 router.route("/url").post(handleSaveURL);
 router.route("/:shortId").get(handleRedirectUser);
 router.route("/analytics/:shortId").get(handleAnalytics);
