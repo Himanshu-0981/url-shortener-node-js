@@ -29,10 +29,34 @@ const handleSaveURL = async (req, res) => {
 const handleRedirectUser = async (req, res) => {
   const uniqueId = req.params.shortId;
   try {
-    const findURL = await URL.findOne({ shortURL: uniqueId });
-    res.redirect(findURL.redirectedURL);
+    const entry = await URL.findOneAndUpdate(
+      {
+        shortURL: uniqueId,
+      },
+      {
+        $push: {
+          visitedHistory: {
+            timestamp: Date.now(),
+          },
+        },
+      }
+    );
+    res.redirect(entry.redirectedURL);
   } catch (err) {
     console.log(err);
+    res.json(err);
+  }
+};
+
+const handleAnalytics = async (req, res) => {
+  const shortId = req.params.shortId;
+  try {
+    const getAnalytics = await URL.findOne({ shortURL: shortId });
+    res.json({
+      analytics: getAnalytics,
+      totalClicks: getAnalytics.visitedHistory.length,
+    });
+  } catch (err) {
     res.json(err);
   }
 };
@@ -41,4 +65,5 @@ module.exports = {
   handleGetAllURL,
   handleSaveURL,
   handleRedirectUser,
+  handleAnalytics,
 };
